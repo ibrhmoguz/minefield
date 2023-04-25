@@ -11,7 +11,6 @@ public class Game
         TotalLive = 5;
         State = GameStateEnum.InProgress;
         this.Board = new Board();
-        this.Board.ResetBoard();
     }
 
     public void Print()
@@ -22,5 +21,22 @@ public class Game
     public string GetPlayerPosition()
     {
         return this.Board.GetPlayerPosition();
+    }
+
+    public void Move(int rowStep, int columnStep)
+    {
+        if (!this.Board.ValidateMove(rowStep, columnStep))
+        {
+            this.TotalLive--;
+            if (TotalLive == 0)
+            {
+                this.State = GameStateEnum.GameOver;
+            }
+        }
+        
+        if (this.State == GameStateEnum.InProgress && this.Board.GetPlayerRowIndex() == 0)
+        {
+            this.State = GameStateEnum.Success;
+        }
     }
 }

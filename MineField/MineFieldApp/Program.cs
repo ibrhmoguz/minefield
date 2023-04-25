@@ -4,27 +4,68 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Minesweeper!");
-            Console.WriteLine("Board (10 X 10):");
-
             var game = new Game();
-            game.StartNewGame();
+            StartNewGame(game);
 
-            while (game.State == GameStateEnum.InProgress)
+            var key = Console.ReadKey();
+            while (key.Key == ConsoleKey.Y)
             {
-                Console.Clear();
-                Console.WriteLine($"Live: {game.TotalLive}  Position: {game.GetPlayerPosition()}");
-                Console.WriteLine();
-                
-                game.Print();
-                
-                Console.WriteLine("Move: ");
-                Console.ReadKey();
-                
+                StartNewGame(game);
+                key = Console.ReadKey();
             }
 
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
+        }
+
+        private static void StartNewGame(Game game)
+        {
+            game.StartNewGame();
+
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Minesweeper Game");
+                Console.WriteLine($"Live: {game.TotalLive}             Position: {game.GetPlayerPosition()}");
+                Console.WriteLine();
+
+                game.Print();
+
+                if (game.State != GameStateEnum.InProgress)
+                {
+                    break;
+                }
+
+                Console.WriteLine("Move (up, down, left, right key): ");
+                var key = Console.ReadKey();
+                switch (key.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        game.Move(-1, 0);
+                        break;
+                    case ConsoleKey.DownArrow:
+                        game.Move(1, 0);
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        game.Move(0, -1);
+                        break;
+                    case ConsoleKey.RightArrow:
+                        game.Move(0, 1);
+                        break;
+                }
+            }
+
+            switch (game.State)
+            {
+                case GameStateEnum.GameOver:
+                    Console.WriteLine("Game over");
+                    break;
+                case GameStateEnum.Success:
+                    Console.WriteLine("Winner!");
+                    break;
+            }
+
+            Console.WriteLine("Play again? (y/n)");
         }
     }
 }

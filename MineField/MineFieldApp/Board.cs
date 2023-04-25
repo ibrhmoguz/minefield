@@ -13,7 +13,7 @@ public class Board
         ResetBoard();
     }
 
-    public void ResetBoard()
+    private void ResetBoard()
     {
         var rand = new Random();
         _board = new Cell[Rows, Columns];
@@ -71,5 +71,31 @@ public class Board
     public string GetPlayerPosition()
     {
         return this.Player.ToString();
+    }
+
+    public bool ValidateMove(int rowStep, int columnStep)
+    {
+        var newRowIndex = this.Player.Row + rowStep;
+        var newColumnIndex = this.Player.Column + columnStep;
+
+        if (newRowIndex < 0 ||
+            newRowIndex > Rows - 1 ||
+            newColumnIndex < 0 ||
+            newColumnIndex > Rows - 1)
+        {
+            return true;
+        }
+        
+        // Set player's new location
+        this.Player.Row = newRowIndex;
+        this.Player.Column = newColumnIndex;
+
+        // Check new location has bomb
+        return !_board[newRowIndex, newColumnIndex].HasBomb;
+    }
+
+    public int GetPlayerRowIndex()
+    {
+        return this.Player.Row;
     }
 }
