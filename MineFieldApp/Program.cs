@@ -4,7 +4,8 @@
     {
         static void Main(string[] args)
         {
-            var game = new Game();
+            // Default board size 10 X 10
+            var game = new Game(10, 10);
             StartNewGame(game);
 
             var key = Console.ReadKey();

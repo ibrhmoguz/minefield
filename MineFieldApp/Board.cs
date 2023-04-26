@@ -2,51 +2,54 @@ namespace MineFieldApp;
 
 public class Board
 {
-    private static int Rows => 10;
-    private static int Columns => 10;
+    private int Rows { get; }
+    private int Columns { get; }
 
-    private Cell[,] _board;
+    private Cell[,] _cells;
     private Player Player { get; set; }
 
-    public Board()
+    public Board(int rowCount, int columnCount)
     {
+        this.Rows = rowCount;
+        this.Columns = columnCount;
         ResetBoard();
     }
 
     private void ResetBoard()
     {
         var rand = new Random();
-        _board = new Cell[Rows, Columns];
-        
+        _cells = new Cell[Rows, Columns];
+
         // Set default starting position of player (Left bottom corner)
-        Player = new Player(9, 0);
+        Player = new Player(this.Rows - 1, 0);
 
         for (var i = 0; i < Rows; i++)
         {
             for (var j = 0; j < Columns; j++)
             {
                 var cell = new Cell(i, j);
-                if (rand.Next(5) == 0) 
+                if (rand.Next(5) == 0)
                 {
                     cell.HasBomb = true;
                 }
-                _board[i, j] = cell;
+
+                _cells[i, j] = cell;
             }
         }
     }
-    
+
     public void Print()
     {
         Console.Write("  ");
-        
+
         // Column numbers
         for (var i = 0; i < Columns; i++)
         {
             Console.Write($" {i + 1} ");
         }
-        
+
         Console.WriteLine();
-        
+
         // Board
         for (var i = 0; i < Rows; i++)
         {
@@ -59,18 +62,19 @@ public class Board
                 }
                 else
                 {
-                    _board[i, j].Print();
+                    _cells[i, j].Print();
                 }
             }
+
             Console.WriteLine();
         }
-        
+
         Console.WriteLine();
     }
 
-    public string GetPlayerPosition()
+    public Player GetPlayer()
     {
-        return this.Player.ToString();
+        return this.Player;
     }
 
     public bool ValidateMove(int rowStep, int columnStep)
@@ -85,17 +89,17 @@ public class Board
         {
             return true;
         }
-        
+
         // Set player's new location
         this.Player.Row = newRowIndex;
         this.Player.Column = newColumnIndex;
 
         // Check new location has bomb
-        return !_board[newRowIndex, newColumnIndex].HasBomb;
+        return !_cells[newRowIndex, newColumnIndex].HasBomb;
     }
 
-    public int GetPlayerRowIndex()
+    public Cell[,] GetCells()
     {
-        return this.Player.Row;
+        return this._cells;
     }
 }
