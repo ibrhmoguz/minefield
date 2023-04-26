@@ -5,12 +5,13 @@ public class Board : IBoard
     public int Rows { get; }
     public int Columns { get; }
     private Cell[,] _cells;
-    private Player Player { get; set; }
+    private IPlayer Player { get; }
 
-    public Board(int rowCount, int columnCount)
+    public Board(IPlayer player, int rowCount, int columnCount)
     {
         this.Rows = rowCount;
         this.Columns = columnCount;
+        this.Player = player;
         ResetBoard();
     }
 
@@ -18,10 +19,6 @@ public class Board : IBoard
     {
         var rand = new Random();
         _cells = new Cell[Rows, Columns];
-
-        // Set default starting position of player (Left bottom corner)
-        Player = new Player(this.Rows - 1, 0);
-
         for (var i = 0; i < Rows; i++)
         {
             for (var j = 0; j < Columns; j++)
@@ -71,7 +68,7 @@ public class Board : IBoard
         Console.WriteLine();
     }
 
-    public Player GetPlayer()
+    public IPlayer GetPlayer()
     {
         return this.Player;
     }
@@ -84,9 +81,9 @@ public class Board : IBoard
         if (newRowIndex < 0 ||
             newRowIndex > Rows - 1 ||
             newColumnIndex < 0 ||
-            newColumnIndex > Rows - 1)
+            newColumnIndex > Columns - 1)
         {
-            return true;
+            return false;
         }
 
         // Set player's new location
@@ -94,7 +91,7 @@ public class Board : IBoard
         this.Player.Column = newColumnIndex;
 
         // Check new location has bomb
-        return !_cells[newRowIndex, newColumnIndex].HasBomb;
+        return _cells[newRowIndex, newColumnIndex].HasBomb;
     }
 
     public Cell[,] GetCells()

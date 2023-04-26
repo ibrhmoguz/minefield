@@ -1,6 +1,6 @@
 namespace MineFieldApp;
 
-public class Player
+public class Player : IPlayer
 {
     public int Row { get; set; }
     public int Column { get; set; }
@@ -11,7 +11,7 @@ public class Player
         Column = column;
     }
 
-    public override string ToString()
+    public string GetPosition()
     {
         return $"{Util.Letters[Row]}{Column + 1}";
     }

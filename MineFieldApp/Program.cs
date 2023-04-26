@@ -5,13 +5,13 @@
         static void Main(string[] args)
         {
             // Default board size 10 X 10
-            var game = new Game(new Board(10, 10), 5);
+            var game = new Game(new Board(new Player(9, 0), 10, 10), 5);
             StartNewGame(game);
 
             var key = Console.ReadKey();
             while (key.Key == ConsoleKey.Y)
             {
-                game = new Game(new Board(10, 10), 5);
+                game = new Game(new Board(new Player(9, 0), 10, 10), 5);
                 StartNewGame(game);
                 key = Console.ReadKey();
             }

@@ -6,7 +6,7 @@ namespace MineFieldApp.Tests;
 public class GameTests
 {
     [TestMethod]
-    public void TestStartNewGame()
+    public void StartNewGame_WhenNoMove_SetsBoard()
     {
         // Arrange
         var boardMock = new Mock<IBoard>();
@@ -26,7 +26,7 @@ public class GameTests
     }
 
     [TestMethod]
-    public void TestGetPlayerPosition()
+    public void GetPlayerPosition_WhenStartNewGame_GetsCorrectPosition()
     {
         // Arrange
         var boardMock = new Mock<IBoard>();
@@ -45,13 +45,13 @@ public class GameTests
     }
     
     [TestMethod]
-    public void Move_WhenValidateMoveReturnsFalse_DecreasesTotalLiveAndSetsStateToGameOver()
+    public void Move_WhenValidateMoveReturnsTrue_DecreasesTotalLiveAndSetsStateToGameOver()
     {
         // Arrange
         var boardMock = new Mock<IBoard>();
         boardMock.Setup(board => board.Rows).Returns(3);
         boardMock.Setup(board => board.Columns).Returns(3);
-        boardMock.Setup(x => x.ValidateMove(1, 1)).Returns(false);
+        boardMock.Setup(x => x.ValidateMove(1, 1)).Returns(true);
         var game = new Game(boardMock.Object, 1);
         game.StartNewGame();
 
@@ -71,7 +71,7 @@ public class GameTests
         boardMock.Setup(board => board.Rows).Returns(3);
         boardMock.Setup(board => board.Columns).Returns(3);
         boardMock.Setup(board => board.GetPlayer()).Returns(new Player(0,1));
-        boardMock.Setup(x => x.ValidateMove(1, 0)).Returns(true);
+        boardMock.Setup(x => x.ValidateMove(1, 0)).Returns(false);
         var game = new Game(boardMock.Object, 1);
         game.StartNewGame();
 
@@ -83,10 +83,10 @@ public class GameTests
     }
     
     [TestMethod]
-    public void TestPrint()
+    public void Print_WhenStartNewGame_SetsCellValueCorrect()
     {
         // Arrange
-        var game = new Game(new Board(7, 7), 5);
+        var game = new Game(new Board(new Player(6, 0),7, 7), 5);
         game.StartNewGame();
 
         // Act
@@ -119,5 +119,4 @@ public class GameTests
             }
         }
     }
-    
 }

@@ -24,12 +24,12 @@ public class Game
 
     public string GetPlayerPosition()
     {
-        return this.Board.GetPlayer().ToString();
+        return this.Board.GetPlayer().GetPosition();
     }
 
     public void Move(int rowStep, int columnStep)
     {
-        if (!this.Board.ValidateMove(rowStep, columnStep))
+        if (this.Board.ValidateMove(rowStep, columnStep))
         {
             this.TotalLive--;
             if (TotalLive == 0)
