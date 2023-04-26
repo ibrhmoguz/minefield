@@ -3,22 +3,18 @@ namespace MineFieldApp;
 public class Game
 {
     public GameStateEnum State { get; private set; }
-    private Board Board { get; set; }
+    public IBoard Board { get; set; }
     public int TotalLive { get; private set; }
-    private int Rows { get; }
-    private int Columns { get; }
-
-    public Game(int rowCount, int columnCount)
+    
+    public Game(IBoard board, int livesCount)
     {
-        this.Rows = rowCount;
-        this.Columns = columnCount;
+        this.Board = board;
+        this.TotalLive = livesCount;
     }
 
     public void StartNewGame()
     {
-        TotalLive = 5;
         State = GameStateEnum.InProgress;
-        this.Board = new Board(this.Rows, this.Columns);
     }
 
     public void Print()

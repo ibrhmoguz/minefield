@@ -5,6 +5,7 @@ public class Cell
     public int Row { get; set; }
     public int Column { get; set; }
     public bool HasBomb { get; set; }
+    public string Value { get; set; }
 
     public Cell(int row, int column)
     {
@@ -13,16 +14,21 @@ public class Cell
         HasBomb = false;
     }
 
-    public void Print()
+    public void Print(string newValue = "")
     {
-        switch (HasBomb)
+        if (!string.IsNullOrEmpty(newValue))
         {
-            case true:
-                Console.Write(" * ");
-                break;
-            case false:
-                Console.Write(" . ");
-                break;
+            this.Value = newValue;
         }
+        else
+        {
+            this.Value = HasBomb switch
+            {
+                true => " * ",
+                false => " . "
+            };
+        }
+
+        Console.Write(this.Value);
     }
 }

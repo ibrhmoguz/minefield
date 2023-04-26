@@ -1,10 +1,9 @@
 namespace MineFieldApp;
 
-public class Board
+public class Board : IBoard
 {
-    private int Rows { get; }
-    private int Columns { get; }
-
+    public int Rows { get; }
+    public int Columns { get; }
     private Cell[,] _cells;
     private Player Player { get; set; }
 
@@ -28,7 +27,7 @@ public class Board
             for (var j = 0; j < Columns; j++)
             {
                 var cell = new Cell(i, j);
-                if (rand.Next(5) == 0)
+                if (rand.Next(Rows) == 0)
                 {
                     cell.HasBomb = true;
                 }
@@ -58,12 +57,12 @@ public class Board
             {
                 if (this.Player.Row == i && this.Player.Column == j)
                 {
-                    Console.Write(" X ");
+                    _cells[i, j].Print(" X ");
                 }
                 else
                 {
                     _cells[i, j].Print();
-                }
+                } 
             }
 
             Console.WriteLine();
