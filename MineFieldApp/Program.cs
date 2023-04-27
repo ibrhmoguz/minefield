@@ -5,19 +5,23 @@
         static void Main(string[] args)
         {
             // Default board size 10 X 10
-            var game = new Game(new Board(new Player(9, 0), 10, 10), 5);
-            StartNewGame(game);
+            CreateGame();
 
             var key = Console.ReadKey();
             while (key.Key == ConsoleKey.Y)
             {
-                game = new Game(new Board(new Player(9, 0), 10, 10), 5);
-                StartNewGame(game);
+                CreateGame();
                 key = Console.ReadKey();
             }
 
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
+        }
+
+        private static void CreateGame()
+        {
+            var game = new Game(new Board(new Player(9, 0), 10, 10), 5);
+            StartNewGame(game);
         }
 
         private static void StartNewGame(Game game)
@@ -28,7 +32,7 @@
             {
                 Console.Clear();
                 Console.WriteLine("Minesweeper Game");
-                Console.WriteLine($"Live: {game.TotalLive}             Position: {game.GetPlayerPosition()}");
+                Console.WriteLine($"Live:{game.TotalLive}   Position:{game.GetPlayerPosition()}   Total Move:{game.TotalMove}");
                 Console.WriteLine();
 
                 game.Print();

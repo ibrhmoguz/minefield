@@ -5,6 +5,7 @@ public class Game
     public GameStateEnum State { get; private set; }
     public IBoard Board { get; set; }
     public int TotalLive { get; private set; }
+    public int TotalMove { get; private set; }
     
     public Game(IBoard board, int livesCount)
     {
@@ -29,7 +30,15 @@ public class Game
 
     public void Move(int rowStep, int columnStep)
     {
-        if (this.Board.ValidateMove(rowStep, columnStep))
+        var result = this.Board.ValidateMove(rowStep, columnStep);
+        if (!result.IsMoveValid)
+        {
+            return;
+        }
+
+        this.TotalMove++;
+        
+        if (result.IsBombHit)
         {
             this.TotalLive--;
             if (TotalLive == 0)

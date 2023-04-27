@@ -6,11 +6,11 @@ namespace MineFieldApp.Tests;
 public class BoardTests
 {
     [TestMethod]
-    [DataRow(-4, 0)]
+    [DataRow(-5, 0)]
     [DataRow(1, 0)]
     [DataRow(0, 5)]
     [DataRow(0, -1)]
-    public void ValidateMove_WhenInvalid_ReturnsTrue(int rowStep, int columnStep)
+    public void ValidateMove_WhenInvalid_ReturnsFalse(int rowStep, int columnStep)
     {
         // Arrange
         var playerMock = new Mock<IPlayer>();
@@ -22,7 +22,7 @@ public class BoardTests
         var result = board.ValidateMove(rowStep, columnStep);
 
         // Assert
-        Assert.AreEqual(false, result);
+        Assert.AreEqual(false, result.IsMoveValid);
     }
 
     [TestMethod]

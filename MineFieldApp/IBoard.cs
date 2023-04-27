@@ -6,6 +6,6 @@ public interface IBoard
     int Columns { get; }
     void Print();
     IPlayer GetPlayer();
-    bool ValidateMove(int rowStep, int columnStep);
+    MoveValidationResult ValidateMove(int rowStep, int columnStep);
     Cell[,] GetCells();
 }

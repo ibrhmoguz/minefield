@@ -5,7 +5,8 @@ public class Cell
     public int Row { get; set; }
     public int Column { get; set; }
     public bool HasBomb { get; set; }
-    public string Value { get; set; }
+    public string Value { get; private set; }
+    public bool IsVisited { get; set; }
 
     public Cell(int row, int column)
     {
@@ -22,11 +23,18 @@ public class Cell
         }
         else
         {
-            this.Value = HasBomb switch
+            if (!this.IsVisited)
             {
-                true => " * ",
-                false => " . "
-            };
+                this.Value = " . ";
+            }
+            else
+            {
+                this.Value = HasBomb switch
+                {
+                    true => " * ",
+                    false => " = "
+                };
+            }
         }
 
         Console.Write(this.Value);

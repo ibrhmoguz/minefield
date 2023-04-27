@@ -54,6 +54,10 @@ public class Board : IBoard
             {
                 if (this.Player.Row == i && this.Player.Column == j)
                 {
+                    if (!_cells[i, j].IsVisited)
+                    {
+                        _cells[i, j].IsVisited = true;
+                    }
                     _cells[i, j].Print(" X ");
                 }
                 else
@@ -73,7 +77,7 @@ public class Board : IBoard
         return this.Player;
     }
 
-    public bool ValidateMove(int rowStep, int columnStep)
+    public MoveValidationResult ValidateMove(int rowStep, int columnStep)
     {
         var newRowIndex = this.Player.Row + rowStep;
         var newColumnIndex = this.Player.Column + columnStep;
@@ -83,15 +87,22 @@ public class Board : IBoard
             newColumnIndex < 0 ||
             newColumnIndex > Columns - 1)
         {
-            return false;
+            return new MoveValidationResult {IsMoveValid = false};
         }
 
         // Set player's new location
         this.Player.Row = newRowIndex;
         this.Player.Column = newColumnIndex;
+        
+        // Set cell is visited
+        _cells[newRowIndex, newColumnIndex].IsVisited = true;
 
         // Check new location has bomb
-        return _cells[newRowIndex, newColumnIndex].HasBomb;
+        return new MoveValidationResult
+        {
+            IsMoveValid = true,
+            IsBombHit = _cells[newRowIndex, newColumnIndex].HasBomb
+        };
     }
 
     public Cell[,] GetCells()

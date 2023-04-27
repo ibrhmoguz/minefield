@@ -32,7 +32,7 @@ public class GameTests
         var boardMock = new Mock<IBoard>();
         boardMock.Setup(board => board.Rows).Returns(4);
         boardMock.Setup(board => board.Columns).Returns(4);
-        boardMock.Setup(board => board.GetPlayer()).Returns(new Player(3,0));
+        boardMock.Setup(board => board.GetPlayer()).Returns(new Player(3, 0));
         var game = new Game(boardMock.Object, 3);
         game.StartNewGame();
 
@@ -43,7 +43,7 @@ public class GameTests
         Assert.IsNotNull(playerPosition);
         Assert.AreEqual("D1", playerPosition);
     }
-    
+
     [TestMethod]
     public void Move_WhenValidateMoveReturnsTrue_DecreasesTotalLiveAndSetsStateToGameOver()
     {
@@ -51,7 +51,11 @@ public class GameTests
         var boardMock = new Mock<IBoard>();
         boardMock.Setup(board => board.Rows).Returns(3);
         boardMock.Setup(board => board.Columns).Returns(3);
-        boardMock.Setup(x => x.ValidateMove(1, 1)).Returns(true);
+        boardMock.Setup(x => x.ValidateMove(1, 1)).Returns(new MoveValidationResult
+        {
+            IsMoveValid = true, 
+            IsBombHit = true
+        });
         var game = new Game(boardMock.Object, 1);
         game.StartNewGame();
 
@@ -70,8 +74,8 @@ public class GameTests
         var boardMock = new Mock<IBoard>();
         boardMock.Setup(board => board.Rows).Returns(3);
         boardMock.Setup(board => board.Columns).Returns(3);
-        boardMock.Setup(board => board.GetPlayer()).Returns(new Player(0,1));
-        boardMock.Setup(x => x.ValidateMove(1, 0)).Returns(false);
+        boardMock.Setup(board => board.GetPlayer()).Returns(new Player(0, 1));
+        boardMock.Setup(x => x.ValidateMove(1, 0)).Returns(new MoveValidationResult {IsMoveValid = true});
         var game = new Game(boardMock.Object, 1);
         game.StartNewGame();
 
@@ -81,12 +85,12 @@ public class GameTests
         // Assert
         Assert.AreEqual(GameStateEnum.Success, game.State);
     }
-    
+
     [TestMethod]
     public void Print_WhenStartNewGame_SetsCellValueCorrect()
     {
         // Arrange
-        var game = new Game(new Board(new Player(6, 0),7, 7), 5);
+        var game = new Game(new Board(new Player(6, 0), 7, 7), 5);
         game.StartNewGame();
 
         // Act
@@ -95,7 +99,7 @@ public class GameTests
         // Assert
         var cells = game.Board.GetCells();
         Assert.IsNotNull(cells);
-        
+
         for (var i = 0; i < 7; i++)
         {
             for (var j = 0; j < 7; j++)
