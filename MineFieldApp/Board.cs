@@ -23,7 +23,7 @@ public class Board : IBoard
         {
             for (var j = 0; j < Columns; j++)
             {
-                var cell = new Cell(i, j);
+                var cell = new Cell();
                 if (rand.Next(Rows) == 0)
                 {
                     cell.HasBomb = true;
@@ -103,10 +103,5 @@ public class Board : IBoard
             IsMoveValid = true,
             IsBombHit = _cells[newRowIndex, newColumnIndex].HasBomb
         };
-    }
-
-    public Cell[,] GetCells()
-    {
-        return this._cells;
     }
 }

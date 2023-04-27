@@ -6,6 +6,22 @@ namespace MineFieldApp.Tests;
 public class GameTests
 {
     [TestMethod]
+    public void Print_WhenPrints_CallsOnce()
+    {
+        // Arrange
+        var boardMock = new Mock<IBoard>();
+        boardMock.Setup(board => board.Rows).Returns(5);
+        boardMock.Setup(board => board.Columns).Returns(5);
+        var game = new Game(boardMock.Object, 3);
+
+        // Act
+        game.Print();
+
+        // Assert
+        boardMock.Verify(board => board.Print(), Times.Once);
+    }
+    
+    [TestMethod]
     public void StartNewGame_WhenNoMove_SetsBoard()
     {
         // Arrange
@@ -40,8 +56,29 @@ public class GameTests
         var playerPosition = game.GetPlayerPosition();
 
         // Assert
-        Assert.IsNotNull(playerPosition);
-        Assert.AreEqual("D1", playerPosition);
+        boardMock.Verify(board => board.GetPlayer(), Times.Once);
+    }
+    
+    [TestMethod]
+    public void Move_WhenValidateMoveReturnsFalse_TotalMoveShouldNotBeIncreased()
+    {
+        // Arrange
+        var boardMock = new Mock<IBoard>();
+        boardMock.Setup(board => board.Rows).Returns(3);
+        boardMock.Setup(board => board.Columns).Returns(3);
+        boardMock.Setup(x => x.ValidateMove(1, 1)).Returns(new MoveValidationResult
+        {
+            IsMoveValid = false
+        });
+        var game = new Game(boardMock.Object, 1);
+        game.StartNewGame();
+
+        // Act
+        game.Move(1, 1);
+
+        // Assert
+        Assert.AreEqual(0, game.TotalMove);
+        Assert.AreEqual(GameStateEnum.InProgress, game.State);
     }
 
     [TestMethod]
@@ -84,43 +121,5 @@ public class GameTests
 
         // Assert
         Assert.AreEqual(GameStateEnum.Success, game.State);
-    }
-
-    [TestMethod]
-    public void Print_WhenStartNewGame_SetsCellValueCorrect()
-    {
-        // Arrange
-        var game = new Game(new Board(new Player(6, 0), 7, 7), 5);
-        game.StartNewGame();
-
-        // Act
-        game.Print();
-
-        // Assert
-        var cells = game.Board.GetCells();
-        Assert.IsNotNull(cells);
-
-        for (var i = 0; i < 7; i++)
-        {
-            for (var j = 0; j < 7; j++)
-            {
-                var cell = cells[i, j];
-
-                Assert.IsNotNull(cell);
-                // Player's default starting position
-                if (i == 6 && j == 0)
-                {
-                    Assert.AreEqual(" X ", cell.Value);
-                }
-                else if (cell.HasBomb)
-                {
-                    Assert.AreEqual(" * ", cell.Value);
-                }
-                else
-                {
-                    Assert.AreEqual(" . ", cell.Value);
-                }
-            }
-        }
     }
 }
