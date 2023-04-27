@@ -10,8 +10,6 @@ public class GameTests
     {
         // Arrange
         var boardMock = new Mock<IBoard>();
-        boardMock.Setup(board => board.Rows).Returns(5);
-        boardMock.Setup(board => board.Columns).Returns(5);
         var game = new Game(boardMock.Object, 3);
 
         // Act
@@ -26,8 +24,6 @@ public class GameTests
     {
         // Arrange
         var boardMock = new Mock<IBoard>();
-        boardMock.Setup(board => board.Rows).Returns(5);
-        boardMock.Setup(board => board.Columns).Returns(5);
         var game = new Game(boardMock.Object, 3);
 
         // Act
@@ -37,8 +33,6 @@ public class GameTests
         Assert.AreEqual(GameStateEnum.InProgress, game.State);
         Assert.AreEqual(3, game.TotalLive);
         Assert.IsNotNull(game.Board);
-        Assert.AreEqual(5, game.Board.Rows);
-        Assert.AreEqual(5, game.Board.Columns);
     }
 
     [TestMethod]
@@ -46,8 +40,6 @@ public class GameTests
     {
         // Arrange
         var boardMock = new Mock<IBoard>();
-        boardMock.Setup(board => board.Rows).Returns(4);
-        boardMock.Setup(board => board.Columns).Returns(4);
         boardMock.Setup(board => board.GetPlayer()).Returns(new Player(3, 0));
         var game = new Game(boardMock.Object, 3);
         game.StartNewGame();
@@ -64,8 +56,6 @@ public class GameTests
     {
         // Arrange
         var boardMock = new Mock<IBoard>();
-        boardMock.Setup(board => board.Rows).Returns(3);
-        boardMock.Setup(board => board.Columns).Returns(3);
         boardMock.Setup(x => x.ValidateMove(1, 1)).Returns(new MoveValidationResult
         {
             IsMoveValid = false
@@ -86,8 +76,6 @@ public class GameTests
     {
         // Arrange
         var boardMock = new Mock<IBoard>();
-        boardMock.Setup(board => board.Rows).Returns(3);
-        boardMock.Setup(board => board.Columns).Returns(3);
         boardMock.Setup(x => x.ValidateMove(1, 1)).Returns(new MoveValidationResult
         {
             IsMoveValid = true, 
@@ -109,8 +97,6 @@ public class GameTests
     {
         // Arrange
         var boardMock = new Mock<IBoard>();
-        boardMock.Setup(board => board.Rows).Returns(3);
-        boardMock.Setup(board => board.Columns).Returns(3);
         boardMock.Setup(board => board.GetPlayer()).Returns(new Player(0, 1));
         boardMock.Setup(x => x.ValidateMove(1, 0)).Returns(new MoveValidationResult {IsMoveValid = true});
         var game = new Game(boardMock.Object, 1);

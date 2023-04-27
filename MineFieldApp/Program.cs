@@ -20,7 +20,7 @@
 
         private static void CreateGame()
         {
-            var game = new Game(new Board(new Player(9, 0), 10, 10), 5);
+            var game = new Game(new Board(new Player(9, 0), new Cells(10, 10)), 5);
             StartNewGame(game);
         }
 
