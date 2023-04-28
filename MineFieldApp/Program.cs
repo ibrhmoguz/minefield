@@ -32,7 +32,7 @@
             {
                 Console.Clear();
                 Console.WriteLine("Minesweeper Game");
-                Console.WriteLine($"Live:{game.TotalLive}   Position:{game.GetPlayerPosition()}   Total Move:{game.TotalMove}");
+                Console.WriteLine($"Live:{game.TotalLive}   Position:{game.GetPlayerPosition()}   Score:{game.TotalMove}");
                 Console.WriteLine();
 
                 game.Print();
