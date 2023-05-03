@@ -53,6 +53,7 @@ public class CellsTests
         var cells = new Cells(5, 5);
         var cell = cells.GetCell(3, 2);
         cell.IsVisited = true;
+        cell.HasBomb = false;
         
         // Act
         cells.Print(3, 2);
